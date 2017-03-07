@@ -1,7 +1,7 @@
 # read cmd and parse parameters
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
-  stop("Error Command\nUSAGE: Rscript hw2_105753024.R -files test.1.csv test.2.csv ¡Vout result.csv", call.=FALSE)
+  stop("Error Command\nUSAGE: Rscript hw2_105753024.R -files test.1.csv test.2.csv Â¡Vout result.csv", call.=FALSE)
 } else{
   i <- 1 # args array's index is begin from 1
   while(i < length(args)){
@@ -23,9 +23,6 @@ if (length(args)==0) {
   }
 } 
 
-#===test arguments===
-#input_name <- c("test.1.csv", "test.2.csv")
-#output_name <- "result.csv"
 
 #===initial each argument===
 i <- 1  # index of input_name must begin from 1
