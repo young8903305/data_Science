@@ -23,6 +23,9 @@ if (length(args)==0) {
   }
 } 
 
+#===test arguments===
+#input_name <- c("test.1.csv", "test.2.csv")
+#output_name <- "result.csv"
 
 #===initial each argument===
 i <- 1  # index of input_name must begin from 1
