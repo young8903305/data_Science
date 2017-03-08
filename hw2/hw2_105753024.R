@@ -7,16 +7,20 @@ if (length(args)==0) {
   while(i < length(args)){
     if(args[i] == "-files"){
       input_name <- args[i+1]
-      i <- i+1
-      while( i < length(args) ){
-        input_name <- c(input_name, args[i+1])
-        i <- i+1
+      i <- i + 2
+      while( args[i] != "-out" ){
+        if( i < length(args) ){
+          input_name <- c(input_name, args[i])
+          i <- i + 1
+        }else if( i==length(args)){
+          input_name <- c(input_name, args[i])
+          break
+        }
       }
     }else{
       output_name <- args[i+1]
-      i <- i + 1
+      i <- i + 2
     }
-    i <- i + 1
   }
   for(i in c(1:length(input_name)) ){
     if (!file.exists(input_name[i])) {
