@@ -54,8 +54,8 @@ set <- c(set, "max")
 weight <- c(weight, as.character(strsplit(input_name[id_w], split = ".csv")))
 height <- c(height, as.character(strsplit(input_name[id_h], split = ".csv")))
 
-#===build a data frame===
+#===build the data frame===
 output <- data.frame(set, weight, height)
 
 #===write out the csv===
-write.table(output, file = output_name, sep = ",", col.names = TRUE, row.names = FALSE)
+write.table(output, file = output_name, sep = ",", col.names = TRUE, row.names = FALSE, quote = FALSE)

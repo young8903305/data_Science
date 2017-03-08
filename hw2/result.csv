@@ -1,4 +1,4 @@
-"set","weight","height"
-"test.1","99.76","199.03"
-"test.2","99.72","197.39"
-"max","test.1","test.1"
+set,weight,height
+test.1,99.76,199.03
+test.2,99.72,197.39
+max,test.1,test.1
