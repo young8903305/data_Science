@@ -42,4 +42,5 @@ set <- as.character(strsplit(input_name, split = ".csv"))
 output <- data.frame(set, weight, height)
 
 #===write out the csv===
-write.table(output, file = output_name, sep = ",", col.names = TRUE, row.names = FALSE)
+write.table(output, file = output_name, sep = ",", col.names = TRUE, row.names = FALSE, quote = FALSE)
+
