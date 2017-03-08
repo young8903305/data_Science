@@ -8,12 +8,14 @@ if (length(args)==0) {
     if(args[i] == "-files"){
       input_name <- args[i+1]
       i <- i+1
-      while(args[i+1] != "-out"){
+      while( i < length(args) ){
         input_name <- c(input_name, args[i+1])
         i <- i+1
       }
+    }else{
+      output_name <- args[i+1]
+      i <- i + 1
     }
-    output_name <- args[i+1]
     i <- i + 1
   }
   for(i in c(1:length(input_name)) ){
@@ -21,11 +23,14 @@ if (length(args)==0) {
       stop("ERROR: No input file.")
     }
   }
+#  print(args)
+#  print(length(args))
+#  print(args[6])
 } 
 
 #===test arguments===
-#input_name <- c("test.1.csv", "test.2.csv")
-#output_name <- "result.csv"
+input_name <- c("test.1.csv", "test.2.csv")
+output_name <- "result.csv"
 
 #===initial each argument===
 i <- 1  # index of input_name must begin from 1
@@ -54,7 +59,7 @@ set <- c(set, "max")
 weight <- c(weight, as.character(strsplit(input_name[id_w], split = ".csv")))
 height <- c(height, as.character(strsplit(input_name[id_h], split = ".csv")))
 
-#===build the data frame===
+#===build a data frame===
 output <- data.frame(set, weight, height)
 
 #===write out the csv===
