@@ -27,9 +27,6 @@ if (length(args)==0) {
       stop("ERROR: No input file.")
     }
   }
-#  print(args)
-#  print(length(args))
-#  print(args[6])
 } 
 
 #===test arguments===
