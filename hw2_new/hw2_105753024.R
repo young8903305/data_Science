@@ -77,12 +77,12 @@ for(file in files){
   if(query_m == "female"){
     i <- 1
     while(i <= length(data$pred.score)){
-      data$pred.score[i] <- 1 - data$pred.score[i]
+      data$pred.score[i] <- 1 - data$pred.score[i] #because the origin predict score is for male
       i <- i + 1
     }
   }
   eval <- prediction(data$pred.score, data$reference)
-  plot(performance(eval,"tpr","fpr"))
+  #plot(performance(eval,"tpr","fpr"))
   temp_AUC <- attributes(performance(eval,'auc'))$y.values[[1]]
 #===concate them into one vector===
   sensitivity <- c(sensitivity, temp_sensi)
