@@ -26,9 +26,9 @@ while(i < length(args))
 }
 
 #===test value===
-#query_m <- "male"
-#files <- c("method1.csv", "method2.csv")
-#out_f <- "out.csv"
+query_m <- "female"
+files <- c("method1.csv", "method2.csv")
+out_f <- "out.csv"
 
 #===calculate sensitivity===
 cal_sensitivity <- function(data, reference, positive){
@@ -73,6 +73,13 @@ for(file in files){
   temp_preci <- round(cal_precision(data$prediction, data$reference, positive = query_m), 2)
   temp_F1 <- round(2 * temp_preci * temp_sensi / (temp_preci + temp_sensi), 2) #sensi = recall
 #===calculate AUC===
+  if(query_m == "female"){
+    i <- 1
+    while(i <= length(data$pred.score)){
+      data$pred.score[i] <- 1 - data$pred.score[i]
+      i <- i+1
+    }
+  }
   eval <- prediction(data$pred.score, data$reference)
 #  plot(performance(eval,"tpr","fpr"))
   temp_AUC <- round(attributes(performance(eval,'auc'))$y.values[[1]], 2)
@@ -81,10 +88,11 @@ for(file in files){
   specificity <- c(specificity, temp_speci)
   F1 <- c(F1, temp_F1)
   AUC <- c(AUC, temp_AUC)
+}
 
 #===a function to create confusion matrix easily, just to confirm my result===
 #  c_matrix <- caret::confusionMatrix(data$prediction, data$reference, positive = query_m, mode = "everything")
-}
+
 
 #===the last row contain which is the highest method===
 last_row <- c("highest", name[which.max(sensitivity)], name[which.max(specificity)], name[which.max(F1)], name[which.max(AUC)])
