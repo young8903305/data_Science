@@ -2,7 +2,7 @@ library("ROCR")
 # read parameters
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
-  stop("USAGE: Rscript hw2_105753024.R --target male/female --files method1.csv method2.csv ... method10.csv --out out.csv", call.=FALSE)
+  stop("USAGE: Rscript hw2_example.R --target male/female --files method1.csv method2.csv ... method10.csv --out out.csv", call.=FALSE)
 }
 
 # parse parameters
@@ -26,9 +26,9 @@ while(i < length(args))
 }
 
 #===test value===
-query_m <- "female"
-files <- c("method1.csv", "method2.csv")
-out_f <- "out.csv"
+#query_m <- "female"
+#files <- c("method1.csv")
+#out_f <- "out.csv"
 
 #===calculate sensitivity===
 cal_sensitivity <- function(data, reference, positive){
@@ -65,34 +65,33 @@ if(query_m == "female"){
 
 #===read file and calculate each value===
 for(file in files){
-  name <- c(name, as.character(strsplit(file, split = ".csv")))
+  temp <- strsplit(file, "/")[[1]][length(strsplit(file, "/")[[1]])] #deal with path
+  name <- c(name, as.character(strsplit(temp, split = ".csv")))
   data <- read.table(file, header = TRUE, sep=",", encoding = "UTF-8")
-#===calculate sensitivity, specificity, precision, F1-measure and round it===
-  temp_sensi <- round(cal_sensitivity(data$prediction, data$reference, positive = query_m), 2)
-  temp_speci <- round(cal_specificity(data$prediction, data$reference, negative = reverse), 2)
-  temp_preci <- round(cal_precision(data$prediction, data$reference, positive = query_m), 2)
-  temp_F1 <- round(2 * temp_preci * temp_sensi / (temp_preci + temp_sensi), 2) #sensi = recall
+#===calculate sensitivity, specificity, precision, F1-measure===
+  temp_sensi <- cal_sensitivity(data$prediction, data$reference, positive = query_m)
+  temp_speci <- cal_specificity(data$prediction, data$reference, negative = reverse)
+  preci <- cal_precision(data$prediction, data$reference, positive = query_m)
+  temp_F1 <- 2 * preci * temp_sensi / (preci + temp_sensi) #sensi = recall
 #===calculate AUC===
   if(query_m == "female"){
     i <- 1
     while(i <= length(data$pred.score)){
       data$pred.score[i] <- 1 - data$pred.score[i]
-      i <- i+1
+      i <- i + 1
     }
   }
   eval <- prediction(data$pred.score, data$reference)
-#  plot(performance(eval,"tpr","fpr"))
-  temp_AUC <- round(attributes(performance(eval,'auc'))$y.values[[1]], 2)
+  plot(performance(eval,"tpr","fpr"))
+  temp_AUC <- attributes(performance(eval,'auc'))$y.values[[1]]
 #===concate them into one vector===
   sensitivity <- c(sensitivity, temp_sensi)
   specificity <- c(specificity, temp_speci)
   F1 <- c(F1, temp_F1)
   AUC <- c(AUC, temp_AUC)
 }
-
 #===a function to create confusion matrix easily, just to confirm my result===
 #  c_matrix <- caret::confusionMatrix(data$prediction, data$reference, positive = query_m, mode = "everything")
-
 
 #===the last row contain which is the highest method===
 last_row <- c("highest", name[which.max(sensitivity)], name[which.max(specificity)], name[which.max(F1)], name[which.max(AUC)])
