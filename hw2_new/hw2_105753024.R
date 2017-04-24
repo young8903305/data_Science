@@ -2,7 +2,7 @@ library("ROCR")
 # read parameters
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
-  stop("USAGE: Rscript hw2_example.R --target male/female --files method1.csv method2.csv ... method10.csv --out out.csv", call.=FALSE)
+  stop("USAGE: Rscript hw2_105753024.R --target male/female --files method1.csv method2.csv ... method10.csv --out out.csv", call.=FALSE)
 }
 
 # parse parameters
