@@ -60,22 +60,22 @@ find_second <- function(data){
 
 #===use Fisher's Exact Test to test significant===
 significant <- function(input){
+# find max and second max
   max <- name[which.max(input)]
   second <- find_second(input)
-  
+#read file  
   max_data <- read.csv(paste0(max, ".csv"), header = TRUE, sep=",", encoding = "UTF-8")
   second_data <- read.csv(paste0(second, ".csv"), header = TRUE, sep=",", encoding = "UTF-8")
-  
+#build data frame, table and do Fisher's test     
   data_temp <- rbind(
     data.frame(group=max, prediction=max_data$prediction),
     data.frame(group=second, prediction=second_data$prediction)
   )
-  
   tab <- table(data_temp)
   fisher <- fisher.test(tab)
 }
 
-#===deal with significant methodX to form like 'method*', others no change===
+#===deal with the significant methodX to form like 'method*', others no change===
 output_form <- function(input){
   result <- significant(input)
   if(result['p.value']<0.05){
@@ -133,7 +133,7 @@ for(file in files){
 #===the last row contain which is the highest method===
 last_row <- c("highest", output_form(sensitivity), output_form(specificity), output_form(F1), output_form(AUC))
 
-#===all of them round 2 digit===
+#===all of them round to 2 digit===
 sensitivity <- round(sensitivity, digits=2)
 specificity <- round(specificity, digits=2)
 F1 <- round(F1, digits=2)
@@ -144,6 +144,5 @@ output <- data.frame(name, sensitivity, specificity, F1, AUC, stringsAsFactors =
 output <- rbind(output, last_row)
 
 #===write out the result csv, write.csv is more suitable===
-#write.table(output, file = out_f, sep = ",", col.names = TRUE, row.names = FALSE, quote = FALSE)
 write.csv(output, file = out_f, row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
-print("It is finished")
+print(paste("go to", dirname(out_f), "to checkout your output file"))
