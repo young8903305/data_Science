@@ -100,8 +100,6 @@ if(query_m == "female"){
 
 #===read file and calculate each value===
 for(file in files){
-#  temp <- strsplit(file, "/")[[1]][length(strsplit(file, "/")[[1]])] #deal with path
-#  name <- c(name, as.character(strsplit(temp, split = ".csv")))
   name <- c(name, gsub(".csv", "", basename(file)))
   data <- read.table(file, header = TRUE, sep=",", encoding = "UTF-8")
 #===calculate sensitivity, specificity, precision, F1-measure===
