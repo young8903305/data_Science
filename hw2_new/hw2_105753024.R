@@ -26,9 +26,9 @@ while(i < length(args))
 }
 
 #===test value===
-query_m <- "male"
-files <- c("method1.csv", "method2.csv", "method3.csv", "method4.csv", "method5.csv", "method6.csv", "method7.csv", "method8.csv", "method9.csv", "method10.csv")
-out_f <- "out.csv"
+#query_m <- "female"
+#files <- c("method1.csv", "method2.csv", "method3.csv", "method4.csv", "method5.csv", "method6.csv", "method7.csv", "method8.csv", "method9.csv", "method10.csv")
+#out_f <- "out2.csv"
 
 #===calculate sensitivity===
 cal_sensitivity <- function(data, reference, positive){
@@ -65,8 +65,6 @@ if(query_m == "female"){
 
 #===read file and calculate each value===
 for(file in files){
-#  temp <- strsplit(file, "/")[[1]][length(strsplit(file, "/")[[1]])] #deal with path
-#  name <- c(name, as.character(strsplit(temp, split = ".csv")))
   name <- c(name, gsub(".csv", "", basename(file)))
   data <- read.table(file, header = TRUE, sep=",", encoding = "UTF-8")
 #===calculate sensitivity, specificity, precision, F1-measure, then round it===
@@ -75,14 +73,20 @@ for(file in files){
   preci <- cal_precision(data$prediction, data$reference, positive = query_m)
   temp_F1 <- round(2 * preci * temp_sensi / (preci + temp_sensi), digit = 2) #sensi = recall
 #===calculate AUC===
-  if(query_m == "female"){
-    i <- 1
-    while(i <= length(data$pred.score)){
-      data$pred.score[i] <- 1 - data$pred.score[i] #because the origin predict score is for male
-      i <- i + 1
+  method_predict_ref <- NULL
+  i <- 1
+  while(i<=length(data$pred.score)){
+    if(query_m=='female'){
+      data$pred.score[i] <- 1 - data$pred.score[i]
     }
+    if(query_m == data$reference[i]){
+      method_predict_ref[i] <- 1
+    }else{
+      method_predict_ref[i] <- 0
+    }
+    i <- i + 1
   }
-  eval <- prediction(data$pred.score, data$reference)
+  eval <- prediction(data$pred.score, method_predict_ref)
   #plot(performance(eval,"tpr","fpr"))
   temp_AUC <- round(attributes(performance(eval,'auc'))$y.values[[1]], digits = 2)
 #===concate them into one vector===
@@ -102,6 +106,5 @@ output <- data.frame(name, sensitivity, specificity, F1, AUC, stringsAsFactors =
 output <- rbind(output, last_row)
 
 #===write out the result csv, write.csv is more suitable===
-#write.table(output, file = out_f, sep = ",", col.names = TRUE, row.names = FALSE, quote = FALSE)
 write.csv(output, file = out_f, row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
 print("It is finished")
