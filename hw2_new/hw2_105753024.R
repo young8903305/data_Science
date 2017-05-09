@@ -10,7 +10,7 @@ i <- 1
 while(i < length(args))
 {
   if(args[i] == "--target"){
-    query_m <- args[i+1]
+    query_m <- tolower(args[i+1])
     i <- i + 1
   }else if(args[i] == "--files"){
     j <- grep("-", c(args[ (i+1):length(args)], "-"))[1]
@@ -68,9 +68,9 @@ for(file in files){
   name <- c(name, gsub(".csv", "", basename(file)))
   data <- read.table(file, header = TRUE, sep=",", encoding = "UTF-8")
 #===calculate sensitivity, specificity, precision, F1-measure, then round it===
-  temp_sensi <- round(cal_sensitivity(data$prediction, data$reference, positive = query_m), digit = 2)
-  temp_speci <- round(cal_specificity(data$prediction, data$reference, negative = reverse), digit = 2)
-  preci <- cal_precision(data$prediction, data$reference, positive = query_m)
+  temp_sensi <- round(cal_sensitivity(tolower(data$prediction), tolower(data$reference), positive = query_m), digit = 2)
+  temp_speci <- round(cal_specificity(tolower(data$prediction), tolower(data$reference), negative = reverse), digit = 2)
+  preci <- cal_precision(tolower(data$prediction), tolower(data$reference), positive = query_m)
   temp_F1 <- round(2 * preci * temp_sensi / (preci + temp_sensi), digit = 2) #sensi = recall
 #===calculate AUC===
   method_predict_ref <- NULL
@@ -79,7 +79,7 @@ for(file in files){
     if(query_m=='female'){
       data$pred.score[i] <- 1 - data$pred.score[i]
     }
-    if(query_m == data$reference[i]){
+    if(query_m == tolower(data$reference[i])){
       method_predict_ref[i] <- 1
     }else{
       method_predict_ref[i] <- 0
