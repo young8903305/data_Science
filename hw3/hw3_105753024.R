@@ -10,7 +10,7 @@ i <- 1
 while(i < length(args))
 {
   if(args[i] == "--target"){
-    query_m <- args[i+1]
+    query_m <- tolower(args[i+1])
     i <- i + 1
   }else if(args[i] == "--files"){
     j <- grep("-", c(args[ (i+1):length(args)], "-"))[1]
@@ -26,9 +26,9 @@ while(i < length(args))
 }
 
 #===test value===
-#query_m <- "female"
-#files <- c("method1.csv", "method2.csv", "method3.csv", "method4.csv", "method5.csv", "method6.csv", "method7.csv", "method8.csv", "method9.csv", "method10.csv")
-#out_f <- "out2.csv"
+query_m <- "female"
+files <- c("hw3/data/set1/method1.csv", "hw3/data/set1/method2.csv", "hw3/data/set1/method3.csv", "hw3/data/set1/method4.csv", "hw3/data/set1/method5.csv", "hw3/data/set1/method6.csv", "hw3/data/set1/method7.csv", "hw3/data/set1/method8.csv", "hw3/data/set1/method9.csv", "hw3/data/set1/method10.csv")
+out_f <- "out2.csv"
 
 #===calculate sensitivity===
 cal_sensitivity <- function(data, reference, positive){
@@ -103,18 +103,18 @@ for(file in files){
   name <- c(name, gsub(".csv", "", basename(file)))
   data <- read.table(file, header = TRUE, sep=",", encoding = "UTF-8")
 #===calculate sensitivity, specificity, precision, F1-measure===
-  temp_sensi <- cal_sensitivity(data$prediction, data$reference, positive = query_m)
-  temp_speci <- cal_specificity(data$prediction, data$reference, negative = reverse)
-  preci <- cal_precision(data$prediction, data$reference, positive = query_m)
-  temp_F1 <- 2 * preci * temp_sensi / (preci + temp_sensi) #sensi = recall
+  temp_sensi <- cal_sensitivity(tolower(data$prediction), tolower(data$reference), positive = query_m)
+  temp_speci <- cal_specificity(tolower(data$prediction), tolower(data$reference), negative = reverse)
+  preci <- cal_precision(tolower(data$prediction), tolower(data$reference), positive = query_m)
+  temp_F1 <- (2 * preci * temp_sensi) / (preci + temp_sensi) #sensi = recall
 #===calculate AUC===
   method_predict_ref <- NULL
   i <- 1
   while(i<=length(data$pred.score)){
-    if(query_m=='female'){
+    if(query_m == 'female'){
       data$pred.score[i] <- 1 - data$pred.score[i]
     }
-    if(query_m == data$reference[i]){
+    if(query_m == tolower(data$reference[i])){
       method_predict_ref[i] <- 1
     }else{
       method_predict_ref[i] <- 0
