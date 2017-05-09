@@ -26,9 +26,9 @@ while(i < length(args))
 }
 
 #===test value===
-query_m <- "female"
-files <- c("hw3/data/set1/method1.csv", "hw3/data/set1/method2.csv", "hw3/data/set1/method3.csv", "hw3/data/set1/method4.csv", "hw3/data/set1/method5.csv", "hw3/data/set1/method6.csv", "hw3/data/set1/method7.csv", "hw3/data/set1/method8.csv", "hw3/data/set1/method9.csv", "hw3/data/set1/method10.csv")
-out_f <- "out2.csv"
+#query_m <- "female"
+#files <- c("hw3/data/set1/method1.csv", "hw3/data/set1/method2.csv", "hw3/data/set1/method3.csv", "hw3/data/set1/method4.csv", "hw3/data/set1/method5.csv", "hw3/data/set1/method6.csv", "hw3/data/set1/method7.csv", "hw3/data/set1/method8.csv", "hw3/data/set1/method9.csv", "hw3/data/set1/method10.csv")
+#out_f <- "out2.csv"
 
 #===calculate sensitivity===
 cal_sensitivity <- function(data, reference, positive){
