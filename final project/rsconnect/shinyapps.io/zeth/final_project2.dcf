@@ -1,0 +1,11 @@
+name: final_project2
+title: final_project
+account: zeth
+server: shinyapps.io
+appId: 190486
+bundleId: 873548
+url: https://zeth.shinyapps.io/final_project2/
+when: 1497879172.87703
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: readHTMLtable.R|test.csv
